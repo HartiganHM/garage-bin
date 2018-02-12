@@ -1,7 +1,7 @@
 const express = require('express');
-const app = express();
-const path = require('path');
 const bodyParser = require('body-parser');
+const path = require('path');
+const app = express();
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
@@ -17,7 +17,7 @@ app
   .use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/v1/garage-bin', (request, response) => {
-  database('garage-items')
+  database('garage_items')
     .select()
     .then(garageItems => {
       return response.status(200).json(garageItems);
