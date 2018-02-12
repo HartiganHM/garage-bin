@@ -10,3 +10,8 @@ const port = process.env.PORT || 3000;
 app.locals.title = 'Garage Bin';
 
 app.set('port', port);
+
+app
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(express.static(path.join(__dirname, 'public')));
