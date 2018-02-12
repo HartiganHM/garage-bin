@@ -51,7 +51,7 @@ app.get('/api/v1/garage-bin/:itemId', (request, response) => {
 
 ///// POST NEW GARAGE ITEM /////
 app.post('/api/v1/garage-bin', (request, response) => {
-  const { newItem } = request.body;
+  const newItem = request.body;
 
   for (let requiredParameter of ['name', 'reason', 'cleanliness']) {
     if (!newItem[requiredParameter]) {
@@ -61,7 +61,7 @@ app.post('/api/v1/garage-bin', (request, response) => {
     }
   }
 
-  database('garabe_items')
+  database('garage_items')
     .insert(newItem, 'id')
     .then(itemId => {
       return response.status(201).json({ id: itemId[0] });
