@@ -121,11 +121,33 @@ describe('API Routes', () => {
         .send({
           name: 'Garbage Fire',
           reason: 'I don\'t know how to put it out!',
-          cleanliness: 'Sparkinlg'
+          cleanliness: 'Sparkling'
         })
         .then(response => {
           response.should.have.status(201);
           response.should.be.json;
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+
+    it('Should reutnr a 422 error if a parameter is missing', () => {
+      return chai
+        .request(server)
+        .post('/api/v1/garage-bin')
+        .send(
+          {
+            name: 'Garbage Fire',
+            reason: 'I don\'t know how to put it out!',
+          }
+        )
+        .then(response => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.error.text.should.equal(
+            '{"error":"You are missing the required parameter cleanliness."}'
+          )
         })
         .catch(error => {
           throw error;
