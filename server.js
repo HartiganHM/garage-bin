@@ -49,6 +49,28 @@ app.get('/api/v1/garage-bin/:itemId', (request, response) => {
     });
 });
 
+///// POST NEW GARAGE ITEM /////
+app.post('/api/v1/garage-bin', (request, response) => {
+  const { newItem } = request.body;
+
+  for (let requiredParameter of ['name', 'reason', 'cleanliness']) {
+    if (!newItem[requiredParameter]) {
+      return response.status(422).json({
+        error: `You are missing the required parameter ${requiredParameter}.`
+      });
+    }
+  }
+
+  database('garabe_items')
+    .insert(newItem, 'id')
+    .then(itemId => {
+      return response.status(201).json({ id: itemId[0] });
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
+});
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
