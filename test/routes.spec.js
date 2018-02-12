@@ -22,7 +22,17 @@ describe('Client Routes', () => {
       });
   });
 
-  it('Should return a 404 error for a route that does not exists', () => {});
+  it('Should return a 404 error for a route that does not exists', () => {
+    return chai
+      .request(server)
+      .get('/cat-hat-party')
+      .then(response => {
+        response.should.have.status(404);
+      })
+      .catch(error => {
+        throw error;
+      });
+  });
 });
 
 describe('API Routes', () => {});
