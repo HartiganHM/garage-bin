@@ -35,6 +35,5 @@ exports.seed = function(knex, Promise) {
 
       return Promise.all(garagePromises);
     })
-    .then(() => console.log('Seeding complete!'))
     .catch(error => console.log(`Error seeding data: ${error}`));
 };
