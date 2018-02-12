@@ -120,7 +120,7 @@ describe('API Routes', () => {
         .post('/api/v1/garage-bin')
         .send({
           name: 'Garbage Fire',
-          reason: 'I don\'t know how to put it out!',
+          reason: "I don't know how to put it out!",
           cleanliness: 'Sparkling'
         })
         .then(response => {
@@ -132,22 +132,45 @@ describe('API Routes', () => {
         });
     });
 
-    it('Should reutnr a 422 error if a parameter is missing', () => {
+    it('Should return a 422 error if a parameter is missing', () => {
       return chai
         .request(server)
         .post('/api/v1/garage-bin')
-        .send(
-          {
-            name: 'Garbage Fire',
-            reason: 'I don\'t know how to put it out!',
-          }
-        )
+        .send({
+          name: 'Garbage Fire',
+          reason: "I don't know how to put it out!"
+        })
         .then(response => {
           response.should.have.status(422);
           response.should.be.json;
           response.error.text.should.equal(
             '{"error":"You are missing the required parameter cleanliness."}'
-          )
+          );
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe('PUT update item cleanliness', () => {
+    beforeEach(done => {
+      knex.seed.run().then(() => {
+        done();
+      });
+    });
+
+    it('Should update an items cleanliness property', () => {
+      return chai
+        .request(server)
+        .put('/api/v1/garage-bin/1')
+        .send({
+          cleanliness: 'Potato'
+        })
+        .then(response => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.success.should.equal('Garage item 1 cleanliness updated to Potato.')
         })
         .catch(error => {
           throw error;
