@@ -16,11 +16,33 @@ app
   .use(bodyParser.urlencoded({ extended: true }))
   .use(express.static(path.join(__dirname, 'public')));
 
+///// GET ALL GARAGE ITEMS /////
 app.get('/api/v1/garage-bin', (request, response) => {
   database('garage_items')
     .select()
     .then(garageItems => {
       return response.status(200).json(garageItems);
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
+});
+
+/////GET GARAGE ITEM BY ID/////
+app.get('/api/v1/garage-bin/:itemId', (request, response) => {
+  const { itemId } = request.params;
+
+  database('garage_items')
+    .where('id', itemId)
+    .select()
+    .then(item => {
+      if (!item.length) {
+        return response.status(404).json({
+          error: `Could not find garage item with id of ${itemId}.`
+        });
+      } else {
+        return response.status(200).json(item);
+      }
     })
     .catch(error => {
       return response.status(500).json({ error });
