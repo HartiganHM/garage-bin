@@ -1,13 +1,27 @@
+const garageItems = [
+  {
+    name: 'Bicycle',
+    reason: 'For riding, duh',
+    cleanliness: 'Dusty'
+  },
+  {
+    name: 'Sewing Machine',
+    reason: 'Make all the bow ties!',
+    cleanliness: 'Sparkling'
+  },
+  {
+    name: 'Old Compost Bin',
+    reason: "It's a bucket",
+    cleanliness: 'Rancid'
+  }
+];
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
-      ]);
-    });
+  return knex('garage_items')
+    .del()
+    .then(() => {
+      return Promise.all([knex('garage_items').insert([garageItems])]);
+    })
+    .then(() => console.log('Seeding complete!'))
+    .catch(error => console.log(`Error seeding data: ${error}`));
 };
