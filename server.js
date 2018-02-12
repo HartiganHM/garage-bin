@@ -71,6 +71,44 @@ app.post('/api/v1/garage-bin', (request, response) => {
     });
 });
 
+///// POST NEW ITEM CLEANLINESS /////
+app.put('/api/v1/garage-bin/:itemId', async (request, response) => {
+  const { itemId } = request.params;
+  const updatedCleanliness = request.body;
+
+  for (let requiredParameter of ['cleanliness']) {
+    if (updatedCleanliness[requiredParameter]) {
+      return response
+        .status(422)
+        .json({
+          error: `You are missing the required parameter ${requiredParameter}`
+        });
+    }
+  }
+
+  const itemToUpdate = await database('garage_items')
+    .where('id', itemId)
+    .select();
+
+  if (!itemToUpdate.length) {
+    return response
+      .status(404)
+      .json({ error: `Item by id ${itemId} not found.` });
+  }
+
+  await database('garage_items')
+    .where('id', itemId)
+    .update(updatedCleanliness)
+    .then(() => {
+      return response.status(201).send({
+        success: `Garage item ${itemId} cleanliness updated.`
+      });
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
+});
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
