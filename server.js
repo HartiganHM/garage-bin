@@ -26,3 +26,7 @@ app.get('/api/v1/garage-bin', (request, response) => {
       return response.status(500).json({ error });
     });
 });
+
+app.listen(app.get('port'), () => {
+  console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+});
