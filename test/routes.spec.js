@@ -35,4 +35,31 @@ describe('Client Routes', () => {
   });
 });
 
-describe('API Routes', () => {});
+describe('API Routes', () => {
+  describe('GET all items', () => {
+    beforeEach(done => {
+      knex.seed.run().then(() => {
+        done();
+      });
+    });
+
+    it('Should get all items', () => {
+      return chai
+        .request(server)
+        .get('/api/v1/garage-bin')
+        .then(response => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(3);
+          response.body[0].should.have.property('id');
+          response.body[0].should.have.property('name');
+          response.body[0].should.have.property('reason');
+          response.body[0].should.have.property('cleanliness');
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+});
