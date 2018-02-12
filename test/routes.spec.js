@@ -106,4 +106,30 @@ describe('API Routes', () => {
         });
     });
   });
+
+  describe('POST new item', () => {
+    beforeEach(done => {
+      knex.seed.run().then(() => {
+        done();
+      });
+    });
+
+    it('Should create a new item', () => {
+      return chai
+        .request(server)
+        .post('/api/v1/garage-bin')
+        .send({
+          name: 'Garbage Fire',
+          reason: 'I don\'t know how to put it out!',
+          cleanliness: 'Sparkinlg'
+        })
+        .then(response => {
+          response.should.have.status(201);
+          response.should.be.json;
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
 });
