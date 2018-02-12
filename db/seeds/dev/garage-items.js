@@ -16,11 +16,21 @@ const garageItems = [
   }
 ];
 
+const createGarageItem = (knex, item) => {
+  return knex('garage_items').insert(item);
+};
+
 exports.seed = function(knex, Promise) {
   return knex('garage_items')
     .del()
     .then(() => {
-      return Promise.all([knex('garage_items').insert([garageItems])]);
+      let garagePromises = [];
+
+      garageItems.forEach(item => {
+        garagePromises.push(createGarageItem(knex, item));
+      });
+
+      return Promise.all(garagePromises);
     })
     .then(() => console.log('Seeding complete!'))
     .catch(error => console.log(`Error seeding data: ${error}`));
