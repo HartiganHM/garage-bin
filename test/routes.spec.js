@@ -194,5 +194,24 @@ describe('API Routes', () => {
           throw error;
         });
     });
+
+    it('Should return a 404 response if item is not found', () => {
+      return chai
+        .request(server)
+        .put('/api/v1/garage-bin/0')
+        .send({
+          cleanliness: 'Potato'
+        })
+        .then(response => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.error.text.should.equal(
+            '{"error":"Item by id 0 not found."}'
+          );
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
   });
 });
