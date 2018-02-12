@@ -112,3 +112,5 @@ app.put('/api/v1/garage-bin/:itemId', async (request, response) => {
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
+
+module.exports = server;
