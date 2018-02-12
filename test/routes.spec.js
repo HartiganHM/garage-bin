@@ -25,4 +25,4 @@ describe('Client Routes', () => {
   it('Should return a 404 error for a route that does not exists', () => {});
 });
 
-describte('API Routes', () => {});
+describe('API Routes', () => {});
