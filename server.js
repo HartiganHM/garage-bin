@@ -71,13 +71,13 @@ app.post('/api/v1/garage-bin', (request, response) => {
     });
 });
 
-///// POST NEW ITEM CLEANLINESS /////
+///// PUT NEW ITEM CLEANLINESS /////
 app.put('/api/v1/garage-bin/:itemId', async (request, response) => {
   const { itemId } = request.params;
   const updatedCleanliness = request.body;
 
   for (let requiredParameter of ['cleanliness']) {
-    if (updatedCleanliness[requiredParameter]) {
+    if (!updatedCleanliness[requiredParameter]) {
       return response
         .status(422)
         .json({
