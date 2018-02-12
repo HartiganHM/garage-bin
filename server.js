@@ -15,3 +15,14 @@ app
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(express.static(path.join(__dirname, 'public')));
+
+app.get('/api/v1/garage-bin', (request, response) => {
+  database('garage-items')
+    .select()
+    .then(garageItems => {
+      return response.status(200).json(garageItems);
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
+});
