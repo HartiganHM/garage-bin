@@ -101,7 +101,7 @@ app.put('/api/v1/garage-bin/:itemId', async (request, response) => {
     .update(updatedCleanliness)
     .then(() => {
       return response.status(201).send({
-        success: `Garage item ${itemId} cleanliness updated.`
+        success: `Garage item ${itemId} cleanliness updated to ${updatedCleanliness.cleanliness}.`
       });
     })
     .catch(error => {
@@ -112,3 +112,5 @@ app.put('/api/v1/garage-bin/:itemId', async (request, response) => {
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
+
+module.exports = app
