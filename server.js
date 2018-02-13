@@ -7,15 +7,6 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 const port = process.env.PORT || 3000;
 
-const accessControlAllowOrigin = (request, response, next) => {
-  response.header('Access-Control-Allow-Origin', '*');
-  response.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-};
-
 const httpsRedirect = (request, response, next) => {
   if( request.headers['x-forwarded-proto'] !== 'https') {
     return response.redirect('https://' + request.get('host') + request.url);
@@ -30,8 +21,6 @@ app.set('port', port);
 
 if (environment !== 'development' && environment !== 'test') {
   app.use(httpsRedirect)
-} else if (environment !== 'test') {
-  app.use(accessControlAllowOrigin)
 }
 
 app
