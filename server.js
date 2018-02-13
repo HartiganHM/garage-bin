@@ -7,11 +7,12 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 const port = process.env.PORT || 3000;
 
-const accessControlAllowOrigin = (request, response, next) => { // Middleware used to set Access-Control-Allow-Origin header in response to avoid CORS errors
+const accessControlAllowOrigin = (request, response, next) => {
   response.header('Access-Control-Allow-Origin', '*');
+  response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   response.header(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
+    'Content-Type, Authorization, Content-Length, X-Requested-With, x-token'
   );
   next();
 };
