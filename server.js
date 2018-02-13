@@ -7,6 +7,15 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 const port = process.env.PORT || 3000;
 
+const accessControlAllowOrigin = (request, response, next) => {
+  response.header('Access-Control-Allow-Origin', '*');
+  response.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+};
+
 const httpsRedirect = (request, response, next) => {
   if( request.headers['x-forwarded-proto'] !== 'https') {
     return response.redirect('https://' + request.get('host') + request.url);
@@ -26,7 +35,8 @@ if (environment !== 'development' && environment !== 'test') {
 app
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: true }))
-  .use(express.static(path.join(__dirname, 'public')));
+  .use(express.static(path.join(__dirname, 'public')))
+  .use(accessControlAllowOrigin);
 
 ///// GET ALL GARAGE ITEMS /////
 app.get('/api/v1/garage-bin', (request, response) => {
